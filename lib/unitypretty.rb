@@ -2,6 +2,9 @@
 
 require 'unitypretty/version'
 
-module Unitypretty
+#
+# unitypretty makes log output from command-line Unity builds more readable
+#
+module UnityPretty
   # Your code goes here...
 end
