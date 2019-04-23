@@ -41,17 +41,22 @@ module UnityPretty
     # Common class methods
     #
     module ClassMethods
-      extend Enumerable
-
-      def each(&block)
-        @line_matchers.each(&block)
+      def each_with_state(state, &block)
+        @line_matchers[state].each(&block)
       end
 
       def line(matcher, &block)
         @line_matchers ||= {}
+        @line_matchers[@state] ||= {}
 
         key = matcher.is_a?(Regexp) ? matcher : Regexp.new(matcher)
-        @line_matchers[key] = block
+        @line_matchers[@state][key] = block
+      end
+
+      def state(state, &block)
+        @state = state
+        yield block
+        @state = nil
       end
     end
 
@@ -59,8 +64,10 @@ module UnityPretty
     # Common instance methods
     #
     module InstanceMethods
+      attr_reader :state
+
       def parse(line)
-        self.class.each do |line_matcher, line_proc|
+        self.class.each_with_state(@state) do |line_matcher, line_proc|
           match = line_matcher.match(line)
           next unless match
 
@@ -69,7 +76,7 @@ module UnityPretty
         end
       end
 
-      def output(action_type: nil, result: nil, data:)
+      def output(action_type: nil, result: nil, data: @data)
         action_type ||= UnityPretty::Formatter::INFORMATION
         result ||= UnityPretty::Formatter::LOG
 
