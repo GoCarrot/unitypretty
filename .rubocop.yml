@@ -4,3 +4,7 @@ Metrics/LineLength:
 Lint/AmbiguousRegexpLiteral:
   Exclude:
     - 'lib/unitypretty/parsers/*'
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*_spec.rb'
