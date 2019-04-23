@@ -62,7 +62,10 @@ module UnityPretty
       def parse(line)
         self.class.each do |line_matcher, line_proc|
           match = line_matcher.match(line)
-          return instance_exec(match.captures, &line_proc) if match
+          next unless match
+
+          captures = match.captures
+          return instance_exec(captures.length == 1 ? captures.first : captures, &line_proc)
         end
       end
 

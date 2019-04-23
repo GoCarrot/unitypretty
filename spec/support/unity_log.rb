@@ -1,12 +1,18 @@
 # frozen_string_literal: true
 
 #
-# Helper module for less typing, more description
+# Helper module for testing parsers against lines of input
 #
 module UnityLog
-  def with_line(log_line, &block)
-    context "with input '#{log_line}'" do
-      subject { described_class.new.parse(log_line).data }
+  # :reek:TooManyStatements
+  def with_line(input, &block)
+    context "with input '#{input}'" do
+      subject(:data) do
+        parser = described_class.new
+        input.each_line { |line| parser.parse(line) }
+        parser.data
+      end
+
       instance_exec(&block)
     end
   end

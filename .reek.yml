@@ -3,6 +3,3 @@ detectors:
   IrresponsibleModule:
     exclude:
       - Data
-
-exclude_paths:
-  - spec
