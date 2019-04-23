@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'date'
+require 'unitypretty/formatter'
 
 module UnityPretty
   #
@@ -9,6 +10,9 @@ module UnityPretty
   module Parser
     extend Enumerable
 
+    #
+    # Structured output from each parser
+    #
     Output = Struct.new(
       :timestamp,   # DateTime
       :version,     # Parser version, int
@@ -38,7 +42,9 @@ module UnityPretty
     module ClassMethods
       extend Enumerable
 
-      def self.each(&block)
+      attr_reader :version
+
+      def each(&block)
         @line_matchers.each(&block)
       end
 
@@ -59,16 +65,31 @@ module UnityPretty
           match = line_matcher.match(line)
           return instance_exec(match.captures, &line_proc) if match
         end
-        nil
       end
 
-      def output(data_merge)
-        @output ||= Output.new(DateTime.new, version, data(data_merge))
+      def output(action_type: nil, result: nil, data:)
+        action_type ||= UnityPretty::Formatter::INFORMATION
+        result ||= UnityPretty::Formatter::LOG
+
+        @output ||= Output.new(
+          DateTime.new,
+          self.class.version,
+          action_type,
+          result,
+          data(data)
+        )
         @output
       end
 
-      def data
-        @data ||= class.Data.new
+      def data(data_merge = nil)
+        @data ||= self.class::Data.new
+
+        data_merge ||= {}
+        data_merge.each do |key, value|
+          @data[key] = value if @data.members.include? key
+        end
+
+        @data
       end
     end
   end

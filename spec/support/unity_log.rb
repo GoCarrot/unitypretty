@@ -6,7 +6,7 @@
 module UnityLog
   def with_line(log_line, &block)
     context "with input '#{log_line}'" do
-      subject { described_class.new.parse(log_line) }
+      subject { described_class.new.parse(log_line).data }
       instance_exec(&block)
     end
   end
