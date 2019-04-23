@@ -8,9 +8,6 @@ module UnityPretty
     class License
       include UnityPretty::Parser
 
-      #
-      # Unity engine version and sha
-      #
       Data = Struct.new(:date, :next_date)
 
       line /^LICENSE SYSTEM \[(.*)\] Next license update check is after (.*)$/ do |date, next_date|
