@@ -6,7 +6,7 @@ require 'unitypretty/version'
 
 Gem::Specification.new do |spec|
   spec.name          = 'unitypretty'
-  spec.version       = Unitypretty::VERSION
+  spec.version       = UnityPretty::VERSION
   spec.authors       = ['Pat Wilson']
   spec.email         = ['pat@teak.io']
 
