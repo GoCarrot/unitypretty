@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative '../lib/unitypretty/parser'
-
 describe UnityPretty::Parser do
   describe 'UnityPretty::Parser::OUTPUT_VERSION' do
     subject { UnityPretty::Parser::OUTPUT_VERSION }
