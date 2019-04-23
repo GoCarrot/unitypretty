@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'date'
-require 'unitypretty/formatter'
 
 module UnityPretty
   #
@@ -20,6 +19,8 @@ module UnityPretty
       :result,      # Type of result of action, symbol or nil
       :data         # Parser-specific data, hash
     )
+
+    OUTPUT_VERSION = 1
 
     def self.each(&block)
       @all.each(&block)
@@ -41,8 +42,6 @@ module UnityPretty
     #
     module ClassMethods
       extend Enumerable
-
-      attr_reader :version
 
       def each(&block)
         @line_matchers.each(&block)
@@ -73,7 +72,7 @@ module UnityPretty
 
         @output ||= Output.new(
           DateTime.new,
-          self.class.version,
+          OUTPUT_VERSION,
           action_type,
           result,
           data(data)
