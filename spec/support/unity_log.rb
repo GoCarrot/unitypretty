@@ -16,4 +16,19 @@ module UnityLog
       instance_exec(&block)
     end
   end
+
+  # :reek:TooManyStatements
+  def with_log(filename, &block)
+    logfile = File.expand_path(File.join(File.dirname(__FILE__), '..', 'fixtures', filename))
+
+    context "with log file '#{logfile}'" do
+      subject(:data) do
+        parser = described_class.new
+        File.foreach(logfile) { |line| parser.parse(line) }
+        parser.data
+      end
+
+      instance_exec(&block)
+    end
+  end
 end
